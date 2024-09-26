@@ -1,12 +1,24 @@
 
 from loadsavejson.loadjson import loadjson
-import importlib,os
+import importlib,os,sys
 import glob
 import shutil
 join = os.path.join
 
 
-simulations = lambda : os.getenv("RUNSTEP_SIMULATIONS")
+
+binpython = sys.executable.split(os.sep)
+# find .conda 
+iconda = binpython.index(".conda")
+# if does not exist, raise
+if iconda == -1:
+    raise ValueError("No .conda found in sys.executable")
+
+binpython = os.sep.join(binpython[:iconda])
+
+main_path   = lambda :  binpython
+simulations = lambda : os.path.join(main_path(),"simulations")
+
 
 def rerun(json_path,overwrite=False):
 

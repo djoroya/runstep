@@ -1,5 +1,5 @@
 
-import os
+import os,sys
 from runstep.createFolder     import createFolder
 from runstep.path_gen   import path_gen
 
@@ -19,22 +19,17 @@ error_msg = {0:"Correct Execution",
 
 # TAKE THE MAIN PATH FROM ENV 
 
+binpython = sys.executable.split(os.sep)
+# find .conda 
+iconda = binpython.index(".conda")
+# if does not exist, raise
+if iconda == -1:
+    raise ValueError("No .conda found in sys.executable")
 
-mp_value = os.getenv("RUNSTEP_MAIN_PATH")
-si_value = os.getenv("RUNSTEP_SIMULATIONS")
+binpython = os.sep.join(binpython[:iconda])
 
-if mp_value is None:
-    raise Exception("RUNSTEP_MAIN_PATH environment variable not found")
-if si_value is None:
-    raise Exception("RUNSTEP_SIMULATIONS environment variable not found")
-
-# must exist 
-if not os.path.exists(mp_value):
-    print(mp_value)
-    raise Exception("Main path not found")
-
-main_path   = lambda :  mp_value
-simulations = lambda : si_value
+main_path   = lambda :  binpython
+simulations = lambda : os.path.join(main_path(),"simulations")
 
 
 def runstep(file="file"):
