@@ -1,0 +1,9 @@
+# python packages
+__pycache__/
+*.pyc
+build/
+dist/
+.conda/
+output/
+*.ipynb
+simulations/
