@@ -32,15 +32,16 @@ main_path   = lambda :  binpython
 simulations = lambda : os.path.join(main_path(),"simulations")
 
 
-def runstep(file="file"):
+def runstep(file="file",name=""):
     def decorator(func):
         def wa(*args, **kwargs):
             # take params
             params        = args[0]
             output_folder = args[1]
             # Create the output folder
+            name = func.__name__
             params["function"] = {
-                "name":func.__name__,
+                "name":name,
                 "file":file
             }
             params["metadata"] = common()

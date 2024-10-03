@@ -3,6 +3,7 @@ MANIFEST.in
 README.md
 setup.py
 runstep/__init__.py
+runstep/autorunstep.py
 runstep/common.py
 runstep/createFolder.py
 runstep/deletesim.py
