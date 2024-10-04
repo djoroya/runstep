@@ -4,7 +4,7 @@ import importlib,os,sys
 import glob
 import shutil
 join = os.path.join
-from runstep.autorunstep import autorunstep
+
 
 
 binpython = sys.executable.split(os.sep)
@@ -47,12 +47,7 @@ def rerun(json_path,overwrite=False):
         
         # Obtener la función desde el módulo
     default_params = getattr(module_default, "default")()
-
-    name = data["function"]["name"]
-    if name == "AutoModel":
-        name = data["function"]["file"].split(".")[-1]
-
-    model = getattr(model_module, name)
+    model = getattr(model_module, data["function"]["name"])
     for key in default_params.keys():
         if key in data.keys():
             default_params[key] = data[key]
@@ -61,4 +56,6 @@ def rerun(json_path,overwrite=False):
 
     outfolder = json_path_rel.split(os.sep)[:-1]
     print(outfolder)
-    autorunstep(model,default_params,outfolder)
+    model(default_params,outfolder)
+
+

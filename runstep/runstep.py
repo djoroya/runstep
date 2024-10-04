@@ -18,31 +18,21 @@ error_msg = {0:"Correct Execution",
 # ENVIRONMENT VARIABLES
 
 # TAKE THE MAIN PATH FROM ENV 
+from runstep.simpath import simpath
 
-binpython = sys.executable.split(os.sep)
-# find .conda 
-iconda = binpython.index(".conda")
-# if does not exist, raise
-if iconda == -1:
-    raise ValueError("No .conda found in sys.executable")
-
-binpython = os.sep.join(binpython[:iconda])
-
-main_path   = lambda :  binpython
-simulations = lambda : os.path.join(main_path(),"simulations")
+simulations = lambda : simpath()
 
 
-def runstep(file="file",name=""):
+def runstep():
     def decorator(func):
         def wa(*args, **kwargs):
             # take params
             params        = args[0]
             output_folder = args[1]
             # Create the output folder
-            name = func.__name__
             params["function"] = {
-                "name":name,
-                "file":file
+                "name":func.__name__,
+                "file":func.__module__
             }
             params["metadata"] = common()
             #output_folder = os.path.abspath(output_folder)
@@ -147,12 +137,3 @@ def lj(*x):
         return loadjson(file)
     else:
         raise Exception("Simulation not found")
-
-def address(file):
-    select = [main_path(),os.sep,".py",".src"]
-    target = ["",".","",""]
-    for i in range(len(select)):
-        file = file.replace(select[i],target[i])
-    file = file[1:]
-
-    return file
