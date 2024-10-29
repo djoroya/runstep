@@ -126,6 +126,8 @@ def runstep():
 
             json_path = os.path.join(spa,"info.json")
             savejson(params_info,json_path)
+
+            
         return wa
     return decorator
 
@@ -141,6 +143,14 @@ def lj(*x):
 def lj_init(*x):
 
     file = join(simulations(),*x, "init.json")
+    if os.path.exists(file):
+        return loadjson(file)
+    else:
+        raise Exception("Simulation not found")
+    
+def lj_info(*x):
+
+    file = join(simulations(),*x, "info.json")
     if os.path.exists(file):
         return loadjson(file)
     else:

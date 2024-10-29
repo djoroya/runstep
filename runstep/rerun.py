@@ -56,6 +56,8 @@ def rerun(json_path,overwrite=False):
 
     outfolder = json_path_rel.split(os.sep)[:-1]
     print(outfolder)
-    model(default_params,outfolder)
+    model(data,outfolder)
+
+    return data
 
 

@@ -20,3 +20,8 @@ runstep.egg-info/dependency_links.txt
 runstep.egg-info/entry_points.txt
 runstep.egg-info/requires.txt
 runstep.egg-info/top_level.txt
+runstep/parametrize/__init__.py
+runstep/parametrize/default.py
+runstep/parametrize/explore.py
+runstep/parametrize/html.py
+runstep/parametrize/parametrize.py
