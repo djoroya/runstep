@@ -6,11 +6,6 @@ import glob
 import copy
 app = Flask(__name__)
 
-# Ruta principal
-@app.route('/')
-def home():
-    return "¡Bienvenido a la API básica en Flask!"
-
 # Ruta de ejemplo que devuelve datos en formato JSON
 @app.route('/api/data', methods=['GET'])
 def get_data():
@@ -28,7 +23,7 @@ def get_simulations():
     return jsonify(simulations)
 
 # Vista de simulaciones html
-@app.route('/simulations/html', methods=['GET'])
+@app.route('/', methods=['GET'])
 def get_simulations_html():
     simulations = glob.glob(os.path.join(simpath(), '*'))
     simulations = [os.path.basename(sim) for sim in simulations]
