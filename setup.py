@@ -13,7 +13,7 @@ setup(
     entry_points={
         "console_scripts": [
             "runstep_gui = runstep.app:main",
-            "mkdirsimln = runstep.mkdirsimln:main",
+            "runstep_mkdirsimln = runstep.mkdirsimln:main",
         ],
     },
     project_urls={
