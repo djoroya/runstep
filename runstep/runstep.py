@@ -137,3 +137,11 @@ def lj(*x):
         return loadjson(file)
     else:
         raise Exception("Simulation not found")
+
+def lj_init(*x):
+
+    file = join(simulations(),*x, "init.json")
+    if os.path.exists(file):
+        return loadjson(file)
+    else:
+        raise Exception("Simulation not found")
