@@ -1,0 +1,2 @@
+[console_scripts]
+runstep_gui = runstep.app:main

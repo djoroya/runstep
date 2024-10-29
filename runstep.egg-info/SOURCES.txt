@@ -3,6 +3,7 @@ MANIFEST.in
 README.md
 setup.py
 runstep/__init__.py
+runstep/app.py
 runstep/common.py
 runstep/createFolder.py
 runstep/deletesim.py
@@ -15,5 +16,6 @@ runstep/simpath.py
 runstep.egg-info/PKG-INFO
 runstep.egg-info/SOURCES.txt
 runstep.egg-info/dependency_links.txt
+runstep.egg-info/entry_points.txt
 runstep.egg-info/requires.txt
 runstep.egg-info/top_level.txt

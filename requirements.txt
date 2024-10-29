@@ -1,2 +1,3 @@
-"git+https://github.com/djoroya/loadjson.git"
+loadsavejson @ git+https://github.com/djoroya/loadjson.git
 colorama
+flask
