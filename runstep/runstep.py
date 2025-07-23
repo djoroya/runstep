@@ -53,7 +53,12 @@ def runstep():
             
 
             createFolder(simulation_path)
-            output_folder = join(*output_folder)
+            if os.name == "nt":
+                if output_folder[0] == "c:":
+                    output_folder[0] = "C:\\"
+                output_folder = join(*output_folder)
+            else:
+                output_folder = join(*output_folder)
             createFolder(output_folder)
             # save params in init.json
             json_path = join(output_folder,params["simulation_path"]+".json")
