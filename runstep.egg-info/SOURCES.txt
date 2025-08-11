@@ -7,6 +7,7 @@ runstep/app.py
 runstep/common.py
 runstep/createFolder.py
 runstep/deletesim.py
+runstep/find.py
 runstep/mkdirsimln.py
 runstep/path_gen.py
 runstep/pprint.py

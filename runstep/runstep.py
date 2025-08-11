@@ -2,12 +2,13 @@
 import os,sys
 from runstep.createFolder     import createFolder
 from runstep.path_gen   import path_gen
-
+from runstep.find import find_from_initjson
 import time
 import traceback
 import colorama
 import datetime
 from loadsavejson.loadjson import loadjson
+from loadsavejson.loadjson_plain import loadjson_plain
 from loadsavejson.savejson  import savejson
 from runstep.common import common
 join = os.path.join
@@ -62,6 +63,7 @@ def runstep():
             createFolder(output_folder)
             # save params in init.json
             json_path = join(output_folder,params["simulation_path"]+".json")
+            print("Saving params in: ",json_path)
             params.pop("output_folder")
             savejson(params,json_path)
             # save init.json in simulation_path
@@ -84,20 +86,43 @@ def runstep():
             params["simulation_path_abs"] = of
             params["output_folder"]       = spa
 
-            try:
-                func(*args, **kwargs)
+            sfind = find_from_initjson(loadjson_plain(json_path_init))
+            # if sfind is not None, it means a matching simulation was found
+            if len(sfind) > 0:
+                print(f"Found matching simulation for {params['simulation_path']}: {sfind}")
+                # copy all file from sfind folder simulation_path to output_folder
+                sfind_path = join(simulations(),sfind[0])
+                import shutil
+                # copy tree 
+                print(f"Copying files from {sfind_path} to {spa}")
+                params_load = loadjson(join(simpath(),
+                                            sfind[0],
+                                            "params.json"))
+                # copy key of params_load to params
+                for key in params_load.keys():
+                    if key not in ["simulation_path_abs",
+                               "output_folder",
+                               "simulation_path"]:
+                        params[key] = params_load[key]
+                shutil.copytree(sfind_path,spa,dirs_exist_ok=True)
                 err = 0
-            except Exception as e:
-                os.chdir(current_folder)
-                print(colorama.Fore.RED + "Error in step: " + func.__name__)
-                traceback.print_exc()
-                print(colorama.Fore.RESET) 
-                # save the error in error.log in output_folder
-                error_log = os.path.join(spa,"error.log")
-                with open(error_log,"w") as f:
-                    f.write(traceback.format_exc())
-                raise Exception(e)
-                err = 1
+
+            else:
+                print(f"No matching simulation found for {params['simulation_path']}, creating new one.")
+                try:
+                    func(*args, **kwargs)
+                    err = 0
+                except Exception as e:
+                    os.chdir(current_folder)
+                    print(colorama.Fore.RED + "Error in step: " + func.__name__)
+                    traceback.print_exc()
+                    print(colorama.Fore.RESET) 
+                    # save the error in error.log in output_folder
+                    error_log = os.path.join(spa,"error.log")
+                    with open(error_log,"w") as f:
+                        f.write(traceback.format_exc())
+                    raise Exception(e)
+                    err = 1
             os.chdir(current_folder)
 
             # Compute the elapsed time
