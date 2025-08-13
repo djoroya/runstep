@@ -20,6 +20,8 @@ def compare(ism1, ism2,avoid_simulation_path=True):
     ism1_path = join(simpath(), ism1,"init.json")
     ism2_path = join(simpath(), ism2,"init.json")
 
+    if not os.path.exists(ism1_path) or not os.path.exists(ism2_path):
+        return False
     ism1 = loadjson_plain(ism1_path)
     ism2 = loadjson_plain(ism2_path)
 
@@ -35,7 +37,8 @@ def compare(ism1, ism2,avoid_simulation_path=True):
 def compare_json_vs_simulation(initjson, ism2,avoid_simulation_path=True):
 
     ism2_path = join(simpath(), ism2,"init.json")
-
+    if not os.path.exists(ism2_path):
+        return False
     ism2 = loadjson_plain(ism2_path)
 
     if avoid_simulation_path:
