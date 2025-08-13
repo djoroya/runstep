@@ -6,6 +6,7 @@ import time
 from .html import mostrar_tabla,dataframize,setvalue,init_table
 import copy
 from importlib import import_module 
+import numpy as np
 
 class cont():
     def __init__(self,fcn):
@@ -78,7 +79,11 @@ def parametrize(params,output_folder,callback=None):
         error = False
 
         for ivar in vars.keys():
-            setvalue(params_loop,vars[ivar]["path"],df[ivar][i])
+
+            sv = df[ivar][i]
+            if type(sv) == np.int64:
+                sv = int(sv)
+            setvalue(params_loop,vars[ivar]["path"],sv)
         # 
         try:
             Run(params_loop,sims_path_list,callback=callback)

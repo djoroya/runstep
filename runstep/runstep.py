@@ -12,7 +12,7 @@ from loadsavejson.loadjson_plain import loadjson_plain
 from loadsavejson.savejson  import savejson
 from runstep.common import common
 join = os.path.join
-
+import shutil
 error_msg = {0:"Correct Execution",
              1:"Something went wrong"}
 
@@ -89,23 +89,30 @@ def runstep():
             sfind = find_from_initjson(loadjson_plain(json_path_init))
             # if sfind is not None, it means a matching simulation was found
             if len(sfind) > 0:
+                os.chdir(current_folder)
+
                 print(f"Found matching simulation for {params['simulation_path']}: {sfind}")
                 # copy all file from sfind folder simulation_path to output_folder
-                sfind_path = join(simulations(),sfind[0])
-                import shutil
-                # copy tree 
-                print(f"Copying files from {sfind_path} to {spa}")
-                params_load = loadjson(join(simpath(),
-                                            sfind[0],
-                                            "params.json"))
-                # copy key of params_load to params
-                for key in params_load.keys():
-                    if key not in ["simulation_path_abs",
-                               "output_folder",
-                               "simulation_path"]:
-                        params[key] = params_load[key]
-                shutil.copytree(sfind_path,spa,dirs_exist_ok=True)
-                err = 0
+                params_load = loadjson(join(simulations(),sfind[0],"params.json"))
+                # copy all keys from params_load to params
+                def merge_dicts_recursive(target, source):
+                    for key, value in source.items():
+                        if (
+                            key in target
+                            and isinstance(target[key], dict)
+                            and isinstance(value, dict)
+                        ):
+                            merge_dicts_recursive(target[key], value)
+                        else:
+                            target[key] = value
+
+                merge_dicts_recursive(params, params_load)
+
+                # remove the folder 
+                print(f"Removing folder {spa} ")
+                print(f"because a matching simulation was found.")
+                shutil.rmtree(spa, ignore_errors=True)    
+                return 
 
             else:
                 print(f"No matching simulation found for {params['simulation_path']}, creating new one.")
