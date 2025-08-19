@@ -45,7 +45,10 @@ def parametrize(params,output_folder,callback=None):
 
     Run = import_module(Run_module).__dict__[Run_name]
     
-    df = dataframize(vars)
+    if "df" in params.keys():
+        df = params["df"]
+    else:
+        df = dataframize(vars)
 
     json = { "vars" : vars,
              "df"   : df   ,
