@@ -23,12 +23,64 @@ class cont():
 @runstep()
 def parametrize(params,output_folder,callback=None):
 
-    # main_path is the path where the vars.json will be saved
-    # Run is a function that runs the simulation. It must have two arguments:
-    # -params: a dictionary with the parameters
-    # -output_folder: the path where the simulation will be run
-    # vars is a dictionary with the variables to parametrize
-    # default is a function that returns a dictionary with the default values
+    """
+    Ejecuta un conjunto de simulaciones parametrizadas y guarda resultados.
+
+    Parameters
+    ----------
+    params : dict
+        Diccionario con la configuración de la simulación. Debe contener:
+        - "fcn": str, nombre de la función principal de simulación.
+        - "module": str, nombre del módulo donde se define la función.
+        - "default": dict, parámetros por defecto de la simulación.
+        - "vars": dict, variables a parametrizar (con sus paths y valores).
+        - "output_folder": str, carpeta de salida.
+        - "df" (opcional): DataFrame con combinaciones de parámetros.
+    output_folder : str
+        Carpeta raíz donde se almacenarán los resultados.
+    callback : callable, optional
+        Función de callback para actualizar el estado durante la ejecución.
+
+    Returns
+    -------
+    dict
+        Diccionario con la información de la ejecución, que incluye:
+        - "vars": variables utilizadas
+        - "df": DataFrame de combinaciones
+        - "paths": rutas de simulación
+        - "finished": bool, si terminó la ejecución
+        - "simulations": lista de rutas a las simulaciones
+        - "json": estado completo del proceso
+
+    Example
+    -------
+```python
+from runstep.parametrize.parametrize import parametrize
+import numpy as np
+params = {
+    "height"  : 2,    # Height [mm]
+    "width"   : {
+        "first":3,    # Width [mm]
+        "second":1.0, # Width [mm]
+            },
+    }
+
+vars = {"L": {"span": np.linspace(0, 45, 2)   , "path": ["height"]},
+        "r": {"span": np.linspace(0.1, 0.5, 2), "path": ["width", "first"]}}
+
+params_parametrize = {"default": params,
+                      "vars": vars,
+                      "module": "runstep.parametrize.dummy",
+                      "fcn": "dummy_function"}
+
+parametrize(params_parametrize,["output"])
+``` 
+
+    See Also
+    --------
+dummy_function
+
+    """
     main_path  = output_folder
     Run_name   = params["fcn"]
     Run_module = params["module"]

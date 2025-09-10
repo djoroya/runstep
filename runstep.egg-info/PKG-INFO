@@ -1,4 +1,4 @@
-Metadata-Version: 2.1
+Metadata-Version: 2.4
 Name: runstep
 Version: 0.1.0
 Home-page: https://github.com/djoroya/runstep
@@ -12,5 +12,21 @@ Classifier: Operating System :: OS Independent
 Requires-Python: >=3.6
 Description-Content-Type: text/markdown
 License-File: LICENSE
+Requires-Dist: loadsavejson@ git+https://github.com/djoroya/loadjson.git
+Requires-Dist: colorama
+Requires-Dist: flask
+Dynamic: author
+Dynamic: author-email
+Dynamic: classifier
+Dynamic: description
+Dynamic: description-content-type
+Dynamic: home-page
+Dynamic: license-file
+Dynamic: project-url
+Dynamic: requires-dist
+Dynamic: requires-python
 
 # runstep
+
+# deploy 
+python setup.py 

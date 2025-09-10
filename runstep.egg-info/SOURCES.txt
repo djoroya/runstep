@@ -11,6 +11,7 @@ runstep/find.py
 runstep/mkdirsimln.py
 runstep/path_gen.py
 runstep/pprint.py
+runstep/purge.py
 runstep/remove_error.py
 runstep/rerun.py
 runstep/runstep.py
